@@ -16,7 +16,7 @@ public class ClientMessage implements Serializable {
      *
      * @param nickname Client's nickname.
      * @param message Client's message.
-     */
+     **/
     public ClientMessage(String nickname, String message) {
         this.nickname = nickname;
         this.message = message;
