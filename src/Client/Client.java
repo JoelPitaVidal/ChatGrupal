@@ -1,7 +1,7 @@
 package Client;
 
 import Methods.Client.ClientMessage;
-
+import Methods.Utils.JsonFiles;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
@@ -19,8 +19,18 @@ public class Client {
     public static void main(String[] args) {
         String host = "localhost";
         int port = 6666;
-
         Scanner sc = new Scanner(System.in);
+
+        // Ask for the user's nickname once
+        System.out.println("Enter your nickname:");
+        String nickname = sc.nextLine();
+
+        // Load messages from JSON file
+        String filePath = nickname + "_messages.json";
+        ClientMessage clientMessage = JsonFiles.loadMessages(filePath);
+        if (clientMessage == null || clientMessage.getNickname().isEmpty()) {
+            clientMessage = new ClientMessage(nickname);
+        }
 
         // Attempt to connect to the server
         try (Socket socket = new Socket(host, port)) {
@@ -31,17 +41,18 @@ public class Client {
 
                 // Loop to allow the user to continue sending messages until they decide to exit
                 while (true) {
-                    System.out.println("Enter your nickname:");
-                    String nickname = sc.nextLine();
                     System.out.println("Type the message you want to send:");
                     String message = sc.nextLine();
 
-                    // Create a client message with the entered nickname and message
-                    ClientMessage clientMessage = new ClientMessage(nickname, message);
+                    // Add the message to the ClientMessage object
+                    clientMessage.addMessage(message);
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
                     System.out.println("Message sent to server from " + nickname);
+
+                    // Save the last 10 messages to JSON
+                    JsonFiles.saveMessages(clientMessage, filePath);
 
                     // Ask if the user wants to send another message
                     System.out.println("Do you want to send another message? (Y/N)");
