@@ -22,10 +22,21 @@ public class ServerMethods {
         try (ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
              ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream())) {
 
-            // Reads data received from the client
-            ClientMessage clientMessage = (ClientMessage) input.readObject();
-            System.out.println("Nickname: " + clientMessage.getNickname());
-            System.out.println("Message: " + clientMessage.getMessage());
+            boolean continueChat = true;
+            while (continueChat && !socket.isClosed()) {
+                // Reads data received from the client
+                ClientMessage clientMessage = (ClientMessage) input.readObject();
+                System.out.println("Nickname: " + clientMessage.getNickname());
+                System.out.println("Message: " + clientMessage.getMessage());
+
+                // Sends acknowledgment to client
+                output.writeObject("Message received: " + clientMessage.getMessage());
+
+                // Checks if the client wants to continue
+                if (clientMessage.getMessage().equalsIgnoreCase("N")) {
+                    continueChat = false;
+                }
+            }
         } catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage()); // Debug message for socket exceptions
             e.printStackTrace();
@@ -34,8 +45,10 @@ public class ServerMethods {
             e.printStackTrace();
         } finally {
             // Closes the client socket
-            socket.close();
-            System.out.println("Client connection closed."); // Debug message for closing client connection
+            if (!socket.isClosed()) {
+                socket.close();
+                System.out.println("Client connection closed."); // Debug message for closing client connection
+            }
         }
     }
 
