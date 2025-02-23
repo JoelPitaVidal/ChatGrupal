@@ -41,13 +41,12 @@ public class ServerMethods {
             System.out.println("SocketException: " + e.getMessage()); // Debug message for socket exceptions
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("IOException: " + e.getMessage()); // Debug message for IO exceptions
-            e.printStackTrace();
+            System.out.println("Connection Closed"); // Debug message for IO exceptions
         } finally {
             // Closes the client socket
             if (!socket.isClosed()) {
                 socket.close();
-                System.out.println("Client connection closed."); // Debug message for closing client connection
+                System.out.println("Connection Closed"); // Message when connection is closed
             }
         }
     }
