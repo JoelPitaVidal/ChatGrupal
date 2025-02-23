@@ -27,13 +27,13 @@ public class ServerMethods {
                 // Reads data received from the client
                 ClientMessage clientMessage = (ClientMessage) input.readObject();
                 System.out.println("Nickname: " + clientMessage.getNickname());
-                System.out.println("Message: " + clientMessage.getMessage());
+                System.out.println("Message: " + clientMessage.getMessages().get(clientMessage.getMessages().size() - 1));
 
                 // Sends acknowledgment to client
-                output.writeObject("Message received: " + clientMessage.getMessage());
+                output.writeObject("Message received: " + clientMessage.getMessages().get(clientMessage.getMessages().size() - 1));
 
                 // Checks if the client wants to continue
-                if (clientMessage.getMessage().equalsIgnoreCase("N")) {
+                if (clientMessage.getMessages().get(clientMessage.getMessages().size() - 1).equalsIgnoreCase("N")) {
                     continueChat = false;
                 }
             }
@@ -41,7 +41,8 @@ public class ServerMethods {
             System.out.println("SocketException: " + e.getMessage()); // Debug message for socket exceptions
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Connection Closed"); // Debug message for IO exceptions
+            System.out.println("IOException: " + e.getMessage()); // Debug message for IO exceptions
+            e.printStackTrace();
         } finally {
             // Closes the client socket
             if (!socket.isClosed()) {

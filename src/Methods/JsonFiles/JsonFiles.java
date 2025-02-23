@@ -1,4 +1,4 @@
-package Methods.Utils;
+package Methods.JsonFiles;
 
 import Methods.Client.ClientMessage;
 import com.google.gson.Gson;

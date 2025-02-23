@@ -1,7 +1,9 @@
 package Client;
 
 import Methods.Client.ClientMessage;
-import Methods.Utils.JsonFiles;
+import Methods.JsonFiles.JsonFiles;
+
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
@@ -33,11 +35,12 @@ public class Client {
         }
 
         // Attempt to connect to the server
-        try (Socket socket = new Socket(host, port)) {
+        try (Socket socket = new Socket(host, port);
+             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream input = new ObjectInputStream(socket.getInputStream())) {
+
             if (isConnectionEstablished(socket)) {
                 System.out.println("Successfully connected to the server.");
-
-                ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 
                 // Loop to allow the user to continue sending messages until they decide to exit
                 while (true) {
@@ -50,6 +53,10 @@ public class Client {
                     // Send the message to the server
                     output.writeObject(clientMessage);
                     System.out.println("Message sent to server from " + nickname);
+
+                    // Read the acknowledgment from the server
+                    String ack = (String) input.readObject();
+                    System.out.println(ack);
 
                     // Save the last 10 messages to JSON
                     JsonFiles.saveMessages(clientMessage, filePath);
