@@ -34,11 +34,17 @@ public class Client {
                 try (Socket socket = new Socket(host, port);
                      ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream())) {
 
-                    // Create a client message with the entered nickname and message
-                    ClientMessage clientMessage = new ClientMessage(nickname, message);
-                    //System.out.println("Message sent to server from " + nickname);
-                    // Send the message to the server
-                    output.writeObject(clientMessage);
+                    // Check if the connection is established
+                    if (isConnectionEstablished(socket)) {
+                        // Create a client message with the entered nickname and message
+                        ClientMessage clientMessage = new ClientMessage(nickname, message);
+
+                        // Send the message to the server
+                        output.writeObject(clientMessage);
+                        System.out.println("Message sent to server from " + nickname);
+                    } else {
+                        System.out.println("Failed to establish connection to the server.");
+                    }
                 } catch (Exception e) {
                     System.out.println("Error occurred while sending message from " + nickname + ": " + e.getMessage());
                     e.printStackTrace();
@@ -50,7 +56,16 @@ public class Client {
             if (!sc.nextLine().equalsIgnoreCase("Y")) {
                 break; // If the answer is not 'Y', exit the loop
             }
-
         }
+    }
+
+    /**
+     * Checks if the connection to the server is established.
+     *
+     * @param socket The client socket.
+     * @return true if the connection is established, false otherwise.
+     */
+    public static boolean isConnectionEstablished(Socket socket) {
+        return socket.isConnected() && !socket.isClosed();
     }
 }
