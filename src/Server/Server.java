@@ -34,6 +34,7 @@ public class Server {
 
                 // Checks if the connection is active
                 if (ServerMethods.isConnectionActive(socket)) {
+                    System.out.println("Connection is active.");
                     // Submits a new task to handle the client connection
                     executor.submit(() -> {
                         try {
