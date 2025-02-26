@@ -6,6 +6,7 @@ import Methods.JsonFiles.JsonFiles;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -27,12 +28,14 @@ public class Client {
         System.out.println("Enter your nickname:");
         String nickname = sc.nextLine();
 
-        // Load messages from JSON file
-        String filePath = nickname + "_messages.json";
-        ClientMessage clientMessage = JsonFiles.loadMessages(filePath);
-        if (clientMessage == null || clientMessage.getNickname().isEmpty()) {
-            clientMessage = new ClientMessage(nickname);
+        // Load messages from JSON directory
+        String folderPath = "json_files";
+        List<ClientMessage> previousMessages = JsonFiles.loadMessagesFromDirectory(folderPath);
+        for (ClientMessage msg : previousMessages) {
+            System.out.println(msg);
         }
+
+        ClientMessage clientMessage = new ClientMessage(nickname);
 
         // Attempt to connect to the server
         try (Socket socket = new Socket(host, port);
@@ -44,7 +47,7 @@ public class Client {
 
                 // Loop to allow the user to continue sending messages until they decide to exit
                 while (true) {
-                    System.out.println("Type the message you want to send:");
+                    System.out.println("Writing...");
                     String message = sc.nextLine();
 
                     // Add the message to the ClientMessage object
@@ -58,7 +61,8 @@ public class Client {
                     String ack = (String) input.readObject();
                     System.out.println(ack);
 
-                    // Save the last 10 messages to JSON
+                    // Save the last 10 messages to JSON file inside the directory
+                    String filePath = folderPath + "/" + nickname + "_messages.json";
                     JsonFiles.saveMessages(clientMessage, filePath);
 
                     // Ask if the user wants to send another message

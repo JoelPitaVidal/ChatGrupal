@@ -6,19 +6,20 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 public class JsonFiles {
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     /**
      * Save messages to a JSON file
      * @param clientMessage The ClientMessage object containing the messages
      * @param filePath The file path where the JSON file will be saved
      */
     public static void saveMessages(ClientMessage clientMessage, String filePath) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(clientMessage, writer);
             System.out.println("Messages saved to " + filePath);
@@ -29,32 +30,54 @@ public class JsonFiles {
     }
 
     /**
-     * Load messages from a JSON file
-     * @param filePath The file path where the JSON file is located
-     * @return The ClientMessage object containing the messages
+     * Load messages from all JSON files in a directory
+     * @param folderPath The directory containing JSON files
+     * @return A list of ClientMessage objects with all messages
      */
-    public static ClientMessage loadMessages(String filePath) {
-        File file = new File(filePath);
-        if (!file.exists()) {
-            try {
-                System.out.println("Messages JSON not found, creating new file...");
-                file.createNewFile();
-                return new ClientMessage(""); // Return an empty ClientMessage object if the file does not exist
-            } catch (IOException e) {
-                System.out.println("Error creating messages file: " + e.getMessage());
-                e.printStackTrace();
-                return null;
+    public static List<ClientMessage> loadMessagesFromDirectory(String folderPath) {
+        List<ClientMessage> allMessages = new ArrayList<>();
+        File folder = new File(folderPath);
+
+        if (!folder.exists() || !folder.isDirectory()) {
+            System.out.println("Directory not found: " + folderPath + ". Creating new directory...");
+            folder.mkdirs();
+            return allMessages; // Return empty list if directory does not exist
+        }
+
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
+        if (files == null || files.length == 0) {
+            System.out.println("No JSON files found in " + folderPath);
+            return allMessages;
+        }
+
+        for (File file : files) {
+            try (FileReader reader = new FileReader(file)) {
+                Type type = new TypeToken<ClientMessage>() {}.getType();
+                ClientMessage message = gson.fromJson(reader, type);
+                if (message != null) {
+                    allMessages.add(message);
+                }
+            } catch (IOException | JsonSyntaxException e) {
+                System.out.println("Error reading file: " + file.getName() + " - " + e.getMessage());
             }
         }
 
-        Gson gson = new Gson();
-        try (FileReader reader = new FileReader(filePath)) {
-            Type type = new TypeToken<ClientMessage>() {}.getType();
-            return gson.fromJson(reader, type);
-        } catch (IOException | JsonSyntaxException e) {
-            System.out.println("Error loading messages: " + e.getMessage());
-            e.printStackTrace();
-            return null;
+        return allMessages;
+    }
+
+    /**
+     * Print all loaded messages from a directory to the console
+     * @param folderPath The directory containing JSON files
+     */
+    public static void printMessages(String folderPath) {
+        List<ClientMessage> messages = loadMessagesFromDirectory(folderPath);
+        if (messages.isEmpty()) {
+            System.out.println("No messages found.");
+        } else {
+            System.out.println("Loaded messages from JSON files:");
+            for (ClientMessage msg : messages) {
+                System.out.println(msg);
+            }
         }
     }
 }

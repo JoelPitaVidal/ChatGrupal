@@ -41,4 +41,9 @@ public class ClientMessage implements Serializable {
         }
         messages.add(message);
     }
+
+    @Override
+    public String toString() {
+        return nickname + ":\n" + String.join("\n", messages);
+    }
 }
