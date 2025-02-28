@@ -6,7 +6,6 @@ import Methods.JsonFiles.JsonFiles;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -28,14 +27,13 @@ public class Client {
         System.out.println("Enter your nickname:");
         String nickname = sc.nextLine();
 
-        // Load messages from JSON directory
+        // Load or create a ClientMessage object for the user
         String folderPath = "json_files";
-        List<ClientMessage> previousMessages = JsonFiles.loadMessagesFromDirectory(folderPath);
-        for (ClientMessage msg : previousMessages) {
-            System.out.println(msg);
-        }
+        ClientMessage clientMessage = JsonFiles.loadOrCreateClientMessage(folderPath, nickname);
 
-        ClientMessage clientMessage = new ClientMessage(nickname);
+        // Display previous messages for this nickname, if any
+        System.out.println("Loaded messages for " + nickname + ":");
+        System.out.println(clientMessage);
 
         // Attempt to connect to the server
         try (Socket socket = new Socket(host, port);
@@ -47,7 +45,7 @@ public class Client {
 
                 // Loop to allow the user to continue sending messages until they decide to exit
                 while (true) {
-                    System.out.println("Writing...");
+                    System.out.println("Write your message:");
                     String message = sc.nextLine();
 
                     // Add the message to the ClientMessage object
@@ -55,13 +53,13 @@ public class Client {
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
-                    System.out.println("Message sent to server from " + nickname);
+                    //System.out.println("Message sent to server from " + nickname);
 
                     // Read the acknowledgment from the server
                     String ack = (String) input.readObject();
-                    System.out.println(ack);
+                    //System.out.println("Server response: " + ack);
 
-                    // Save the last 10 messages to JSON file inside the directory
+                    // Save the latest messages to a JSON file inside the directory
                     String filePath = folderPath + "/" + nickname + "_messages.json";
                     JsonFiles.saveMessages(clientMessage, filePath);
 
