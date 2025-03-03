@@ -34,9 +34,7 @@ public class Client {
         // System.out.println("Loaded messages for " + nickname + ":");
         // System.out.println(clientMessage);
 
-        // Display all messages from all users
-        // System.out.println("All messages from all users:");
-        JsonFiles.printMessages();
+
 
         // Attempt to connect to the server
         try (Socket socket = new Socket(host, port);
@@ -48,6 +46,13 @@ public class Client {
 
                 // Loop to allow the user to continue sending messages until they decide to exit
                 while (true) {
+                    //Clean the terminal
+                    clearTerminal();
+
+                    // Display all messages from all users
+                    // System.out.println("All messages from all users:");
+                    JsonFiles.printMessages();
+
                     System.out.println("Write your message:");
                     String message = sc.nextLine();
 
@@ -65,6 +70,7 @@ public class Client {
                     // Ask if the user wants to send another message
                     System.out.println("Do you want to send another message? (Y/N)");
                     if (!sc.nextLine().equalsIgnoreCase("Y")) {
+                        //Clean the terminal
                         clearTerminal();
                         JsonFiles.printMessages();
                         break; // If the answer is not 'Y', exit the loop
