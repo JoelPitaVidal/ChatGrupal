@@ -31,8 +31,12 @@ public class Client {
         ClientMessage clientMessage = JsonFiles.loadOrCreateClientMessage(nickname);
 
         // Display previous messages for this nickname, if any
-        System.out.println("Loaded messages for " + nickname + ":");
-        System.out.println(clientMessage);
+        // System.out.println("Loaded messages for " + nickname + ":");
+        // System.out.println(clientMessage);
+
+        // Display all messages from all users
+        // System.out.println("All messages from all users:");
+        JsonFiles.printMessages();
 
         // Attempt to connect to the server
         try (Socket socket = new Socket(host, port);
@@ -49,6 +53,9 @@ public class Client {
 
                     // Add the message to the ClientMessage object
                     JsonFiles.addMessage(nickname, nickname, message);
+
+                    // Reload the updated ClientMessage object
+                    clientMessage = JsonFiles.loadOrCreateClientMessage(nickname);
 
                     // Send the message to the server
                     output.writeObject(clientMessage);

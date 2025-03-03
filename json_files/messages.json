@@ -6,12 +6,22 @@
         {
           "usuario": "JOel",
           "mensaje": "que tal estamos?",
-          "timestamp": "2025-03-03T10:00:00Z"
+          "timestamp": "Mar 3, 2025, 11:00:00 AM"
         },
         {
           "usuario": "JOel",
           "mensaje": "holiwi",
-          "timestamp": "2025-03-03T10:05:00Z"
+          "timestamp": "Mar 3, 2025, 11:05:00 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "Esto es un mensaje posterior al mensaje de Pedro",
+          "timestamp": "Mar 3, 2025, 4:35:08 PM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "segundo mensaje",
+          "timestamp": "Mar 3, 2025, 4:39:59 PM"
         }
       ]
     },
@@ -21,7 +31,12 @@
         {
           "usuario": "Pedro",
           "mensaje": "Hola soy Pedro",
-          "timestamp": "2025-03-03T10:20:00Z"
+          "timestamp": "Mar 3, 2025, 11:20:00 AM"
+        },
+        {
+          "usuario": "Pedro",
+          "mensaje": "Mensaje posterior al segundo mensaje de JOel",
+          "timestamp": "Mar 3, 2025, 4:40:32 PM"
         }
       ]
     }
