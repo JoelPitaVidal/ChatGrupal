@@ -52,10 +52,7 @@ public class Client {
                     String message = sc.nextLine();
 
                     // Add the message to the ClientMessage object
-                    JsonFiles.addMessage(nickname, nickname, message);
-
-                    // Reload the updated ClientMessage object
-                    clientMessage = JsonFiles.loadOrCreateClientMessage(nickname);
+                    clientMessage.addMessage(nickname, message);
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
@@ -68,6 +65,8 @@ public class Client {
                     // Ask if the user wants to send another message
                     System.out.println("Do you want to send another message? (Y/N)");
                     if (!sc.nextLine().equalsIgnoreCase("Y")) {
+                        clearTerminal();
+                        JsonFiles.printMessages();
                         break; // If the answer is not 'Y', exit the loop
                     }
                 }
@@ -88,5 +87,15 @@ public class Client {
      */
     public static boolean isConnectionEstablished(Socket socket) {
         return socket.isConnected() && !socket.isClosed();
+    }
+
+
+    /**
+     * Clears the terminal screen.
+     */
+    public static void clearTerminal() {
+        // This sequence works on most ANSI-compatible terminals
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

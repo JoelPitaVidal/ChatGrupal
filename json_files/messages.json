@@ -27,6 +27,11 @@
           "usuario": "JOel",
           "mensaje": "Estamos comprobando que el chat funcione",
           "timestamp": "Mar 3, 2025, 4:47:30 PM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "no te dupliques",
+          "timestamp": "Mar 3, 2025, 5:03:44 PM"
         }
       ]
     },
@@ -57,6 +62,11 @@
           "usuario": "Chema",
           "mensaje": "Este es un nuevo usuário",
           "timestamp": "Mar 3, 2025, 4:50:44 PM"
+        },
+        {
+          "usuario": "Chema",
+          "mensaje": "esto se mostrará al cerrar el chat",
+          "timestamp": "Mar 3, 2025, 5:08:53 PM"
         }
       ]
     }

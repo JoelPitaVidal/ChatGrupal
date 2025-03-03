@@ -1,6 +1,5 @@
 package Server;
 
-import Methods.Client.ClientMessage;
 import Methods.Server.ServerMethods;
 
 import java.io.IOException;
