@@ -49,15 +49,15 @@ public class Client {
                     String message = sc.nextLine();
 
                     // Add the message to the ClientMessage object
-                    clientMessage.addMessage(message);
+                    clientMessage.addMessage(nickname, message);
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
-                    //System.out.println("Message sent to server from " + nickname);
+                    System.out.println("Message sent to server from " + nickname);
 
                     // Read the acknowledgment from the server
                     String ack = (String) input.readObject();
-                    //System.out.println("Server response: " + ack);
+                    System.out.println("Server response: " + ack);
 
                     // Save the latest messages to a JSON file inside the directory
                     String filePath = folderPath + "/" + nickname + "_messages.json";

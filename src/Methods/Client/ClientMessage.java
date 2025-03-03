@@ -2,6 +2,7 @@ package Methods.Client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class ClientMessage implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String nickname;
-    private List<String> messages;
+    private List<Message> messages;
 
     /**
      * Constructor for ClientMessage.
@@ -31,19 +32,23 @@ public class ClientMessage implements Serializable {
         this.nickname = nickname;
     }
 
-    public List<String> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void addMessage(String message) {
+    public void addMessage(String usuario, String mensaje) {
         if (messages.size() >= 10) {
             messages.remove(0); // Remove the oldest message if we already have 10
         }
-        messages.add(message);
+        messages.add(new Message(usuario, mensaje, new Date()));
     }
 
     @Override
     public String toString() {
-        return nickname + ":\n" + String.join("\n", messages);
+        StringBuilder sb = new StringBuilder(nickname + ":\n");
+        for (Message message : messages) {
+            sb.append(message).append("\n");
+        }
+        return sb.toString();
     }
 }

@@ -1,9 +1,25 @@
 {
   "nickname": "JOel",
   "messages": [
-    "que tal estamos?",
-    "holiwi",
-    "adiosito owo",
-    "Holiiiiiiiz"
+    {
+      "usuario": "JOel",
+      "mensaje": "que tal estamos?",
+      "timestamp": "2025-03-03T10:00:00Z"
+    },
+    {
+      "usuario": "JOel",
+      "mensaje": "holiwi",
+      "timestamp": "2025-03-03T10:05:00Z"
+    },
+    {
+      "usuario": "JOel",
+      "mensaje": "adiosito owo",
+      "timestamp": "2025-03-03T10:10:00Z"
+    },
+    {
+      "usuario": "JOel",
+      "mensaje": "Holiiiiiiiz",
+      "timestamp": "2025-03-03T10:15:00Z"
+    }
   ]
 }

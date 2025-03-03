@@ -1,6 +1,7 @@
 package Methods.JsonFiles;
 
 import Methods.Client.ClientMessage;
+import Methods.Client.Message;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -9,6 +10,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class JsonFiles {
@@ -108,12 +111,23 @@ public class JsonFiles {
      * @param folderPath The directory containing JSON files
      */
     public static void printMessages(String folderPath) {
-        List<ClientMessage> messages = loadMessagesFromDirectory(folderPath);
-        if (messages.isEmpty()) {
+        List<ClientMessage> clientMessages = loadMessagesFromDirectory(folderPath);
+        List<Message> allMessages = new ArrayList<>();
+
+        // Collect all messages from all ClientMessage objects
+        for (ClientMessage clientMessage : clientMessages) {
+            allMessages.addAll(clientMessage.getMessages());
+        }
+
+        // Sort messages by timestamp
+        Collections.sort(allMessages, Comparator.comparing(Message::getTimestamp));
+
+        // Print sorted messages
+        if (allMessages.isEmpty()) {
             System.out.println("No messages found.");
         } else {
             System.out.println("Loaded messages from JSON files:");
-            for (ClientMessage msg : messages) {
+            for (Message msg : allMessages) {
                 System.out.println(msg);
             }
         }

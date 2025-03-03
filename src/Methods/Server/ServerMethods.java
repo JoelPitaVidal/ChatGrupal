@@ -1,6 +1,7 @@
 package Methods.Server;
 
 import Methods.Client.ClientMessage;
+import Methods.Client.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,14 +27,15 @@ public class ServerMethods {
             while (continueChat && !socket.isClosed()) {
                 // Reads data received from the client
                 ClientMessage clientMessage = (ClientMessage) input.readObject();
+                Message lastMessage = clientMessage.getMessages().get(clientMessage.getMessages().size() - 1);
                 System.out.println("Nickname: " + clientMessage.getNickname());
-                System.out.println("Message: " + clientMessage.getMessages().get(clientMessage.getMessages().size() - 1));
+                System.out.println("Message: " + lastMessage);
 
                 // Sends acknowledgment to client
-                output.writeObject("Message received: " + clientMessage.getMessages().get(clientMessage.getMessages().size() - 1));
+                output.writeObject("Message received: " + lastMessage);
 
                 // Checks if the client wants to continue
-                if (clientMessage.getMessages().get(clientMessage.getMessages().size() - 1).equalsIgnoreCase("N")) {
+                if (lastMessage.getMensaje().equalsIgnoreCase("N")) {
                     continueChat = false;
                 }
             }
