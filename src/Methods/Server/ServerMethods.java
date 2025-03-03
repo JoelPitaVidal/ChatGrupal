@@ -2,6 +2,7 @@ package Methods.Server;
 
 import Methods.Client.ClientMessage;
 import Methods.Client.Message;
+import Methods.JsonFiles.JsonFiles;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -30,6 +31,9 @@ public class ServerMethods {
                 Message lastMessage = clientMessage.getMessages().get(clientMessage.getMessages().size() - 1);
                 System.out.println("Nickname: " + clientMessage.getNickname());
                 System.out.println("Message: " + lastMessage);
+
+                // Add the message to the JSON file
+                JsonFiles.addMessage(clientMessage.getNickname(), lastMessage.getUsuario(), lastMessage.getMensaje());
 
                 // Sends acknowledgment to client
                 output.writeObject("Message received: " + lastMessage);

@@ -28,8 +28,7 @@ public class Client {
         String nickname = sc.nextLine();
 
         // Load or create a ClientMessage object for the user
-        String folderPath = "json_files";
-        ClientMessage clientMessage = JsonFiles.loadOrCreateClientMessage(folderPath, nickname);
+        ClientMessage clientMessage = JsonFiles.loadOrCreateClientMessage(nickname);
 
         // Display previous messages for this nickname, if any
         System.out.println("Loaded messages for " + nickname + ":");
@@ -49,7 +48,7 @@ public class Client {
                     String message = sc.nextLine();
 
                     // Add the message to the ClientMessage object
-                    clientMessage.addMessage(nickname, message);
+                    JsonFiles.addMessage(nickname, nickname, message);
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
@@ -58,10 +57,6 @@ public class Client {
                     // Read the acknowledgment from the server
                     String ack = (String) input.readObject();
                     System.out.println("Server response: " + ack);
-
-                    // Save the latest messages to a JSON file inside the directory
-                    String filePath = folderPath + "/" + nickname + "_messages.json";
-                    JsonFiles.saveMessages(clientMessage, filePath);
 
                     // Ask if the user wants to send another message
                     System.out.println("Do you want to send another message? (Y/N)");

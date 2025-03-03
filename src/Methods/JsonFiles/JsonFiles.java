@@ -16,17 +16,19 @@ import java.util.List;
 
 public class JsonFiles {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final String FILE_PATH = "json_files/messages.json";
+    private static final int MAX_USERS = 10;
+    private static final int MAX_MESSAGES = 10;
 
     /**
-     * Save messages to a JSON file
+     * Save all users' messages to a JSON file
      *
-     * @param clientMessage The ClientMessage object containing the messages
-     * @param filePath      The file path where the JSON file will be saved
+     * @param users The list of ClientMessage objects containing the messages
      */
-    public static void saveMessages(ClientMessage clientMessage, String filePath) {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            gson.toJson(clientMessage, writer);
-            System.out.println("Messages saved to " + filePath);
+    public static void saveMessages(List<ClientMessage> users) {
+        try (FileWriter writer = new FileWriter(FILE_PATH)) {
+            gson.toJson(new UsersWrapper(users), writer);
+            System.out.println("Messages saved to " + FILE_PATH);
         } catch (IOException e) {
             System.out.println("Error saving messages: " + e.getMessage());
             e.printStackTrace();
@@ -34,89 +36,107 @@ public class JsonFiles {
     }
 
     /**
-     * Load messages from all JSON files in a directory
+     * Load all users' messages from the JSON file
      *
-     * @param folderPath The directory containing JSON files
      * @return A list of ClientMessage objects with all messages
      */
-    public static List<ClientMessage> loadMessagesFromDirectory(String folderPath) {
-        List<ClientMessage> allMessages = new ArrayList<>();
-        File folder = new File(folderPath);
+    public static List<ClientMessage> loadMessages() {
+        List<ClientMessage> users = new ArrayList<>();
+        File file = new File(FILE_PATH);
 
-        if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("Directory not found: " + folderPath + ". Creating new directory...");
-            folder.mkdirs();
-            return allMessages; // Return empty list if directory does not exist
+        if (!file.exists()) {
+            System.out.println("File not found: " + FILE_PATH + ". Creating new file...");
+            saveMessages(users); // Create an empty file if it doesn't exist
+            return users;
         }
 
-        File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
-        if (files == null || files.length == 0) {
-            System.out.println("No JSON files found in " + folderPath);
-            return allMessages;
-        }
-
-        for (File file : files) {
-            try (FileReader reader = new FileReader(file)) {
-                Type type = new TypeToken<ClientMessage>() {}.getType();
-                ClientMessage message = gson.fromJson(reader, type);
-                if (message != null) {
-                    allMessages.add(message);
-                }
-            } catch (IOException | JsonSyntaxException e) {
-                System.out.println("Error reading file: " + file.getName() + " - " + e.getMessage());
+        try (FileReader reader = new FileReader(file)) {
+            Type type = new TypeToken<UsersWrapper>() {}.getType();
+            UsersWrapper wrapper = gson.fromJson(reader, type);
+            if (wrapper != null) {
+                users = wrapper.getUsers();
             }
+        } catch (IOException | JsonSyntaxException e) {
+            System.out.println("Error reading file: " + FILE_PATH + " - " + e.getMessage());
         }
 
-        return allMessages;
+        return users;
     }
 
     /**
-     * Load or create a ClientMessage file for a specific nickname.
-     * If the file does not exist, it will create one with the nickname and save it.
+     * Load or create a ClientMessage object for a specific nickname.
+     * If the user does not exist, it will create one with the nickname and save it.
      *
-     * @param folderPath The directory containing JSON files
-     * @param nickname   The nickname of the client
+     * @param nickname The nickname of the client
      * @return The ClientMessage object for the given nickname
      */
-    public static ClientMessage loadOrCreateClientMessage(String folderPath, String nickname) {
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            folder.mkdirs(); // Create the directory if it doesn't exist
-        }
-
-        String filePath = folderPath + "/" + nickname + "_messages.json";
-        File file = new File(filePath);
-
-        if (file.exists()) {
-            try (FileReader reader = new FileReader(file)) {
-                Type type = new TypeToken<ClientMessage>() {}.getType();
-                return gson.fromJson(reader, type);
-            } catch (IOException | JsonSyntaxException e) {
-                System.out.println("Error reading file: " + file.getName() + " - " + e.getMessage());
+    public static ClientMessage loadOrCreateClientMessage(String nickname) {
+        List<ClientMessage> users = loadMessages();
+        for (ClientMessage user : users) {
+            if (user.getNickname().equalsIgnoreCase(nickname)) {
+                return user;
             }
-        } else {
-            // If the file doesn't exist, create a new ClientMessage and save it
-            ClientMessage newClientMessage = new ClientMessage(nickname);
-            saveMessages(newClientMessage, filePath);
-            System.out.println("New JSON file created for nickname: " + nickname);
-            return newClientMessage;
         }
 
-        return null; // In case of an error
+        // If the user doesn't exist, create a new ClientMessage
+        if (users.size() >= MAX_USERS) {
+            System.out.println("Maximum number of users reached. Cannot create new user.");
+            return null;
+        }
+
+        ClientMessage newUser = new ClientMessage(nickname);
+        users.add(newUser);
+        saveMessages(users);
+        System.out.println("New user created: " + nickname);
+        return newUser;
     }
 
     /**
-     * Print all loaded messages from a directory to the console
+     * Add a message to a user's message list and save to the JSON file.
+     * If the user has more than MAX_MESSAGES, the oldest message will be removed.
      *
-     * @param folderPath The directory containing JSON files
+     * @param nickname The nickname of the client
+     * @param usuario  The user sending the message
+     * @param mensaje  The message content
      */
-    public static void printMessages(String folderPath) {
-        List<ClientMessage> clientMessages = loadMessagesFromDirectory(folderPath);
+    public static void addMessage(String nickname, String usuario, String mensaje) {
+        List<ClientMessage> users = loadMessages();
+        ClientMessage user = null;
+
+        for (ClientMessage u : users) {
+            if (u.getNickname().equalsIgnoreCase(nickname)) {
+                user = u;
+                break;
+            }
+        }
+
+        if (user == null) {
+            if (users.size() >= MAX_USERS) {
+                System.out.println("Maximum number of users reached. Cannot add message.");
+                return;
+            }
+            user = new ClientMessage(nickname);
+            users.add(user);
+        }
+
+        user.addMessage(usuario, mensaje);
+        if (user.getMessages().size() > MAX_MESSAGES) {
+            user.getMessages().remove(0); // Remove the oldest message
+        }
+
+        saveMessages(users);
+    }
+
+    /**
+     * Print all loaded messages from the JSON file to the console
+     */
+    public static void printMessages() {
+        List<ClientMessage> users = loadMessages();
         List<Message> allMessages = new ArrayList<>();
 
         // Collect all messages from all ClientMessage objects
-        for (ClientMessage clientMessage : clientMessages) {
-            allMessages.addAll(clientMessage.getMessages());
+        for (ClientMessage user : users) {
+            allMessages.addAll(user.getMessages());
         }
 
         // Sort messages by timestamp
@@ -126,10 +146,29 @@ public class JsonFiles {
         if (allMessages.isEmpty()) {
             System.out.println("No messages found.");
         } else {
-            System.out.println("Loaded messages from JSON files:");
+            System.out.println("Loaded messages from JSON file:");
             for (Message msg : allMessages) {
                 System.out.println(msg);
             }
+        }
+    }
+
+    /**
+     * Wrapper class for the list of users to match the JSON structure
+     */
+    private static class UsersWrapper {
+        private List<ClientMessage> users;
+
+        public UsersWrapper(List<ClientMessage> users) {
+            this.users = users;
+        }
+
+        public List<ClientMessage> getUsers() {
+            return users;
+        }
+
+        public void setUsers(List<ClientMessage> users) {
+            this.users = users;
         }
     }
 }
