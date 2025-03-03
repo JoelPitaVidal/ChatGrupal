@@ -59,11 +59,11 @@ public class Client {
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
-                    System.out.println("Message sent to server from " + nickname);
+                    // System.out.println("Message sent to server from " + nickname);
 
                     // Read the acknowledgment from the server
-                    String ack = (String) input.readObject();
-                    System.out.println("Server response: " + ack);
+                    // String ack = (String) input.readObject();
+                    // System.out.println("Server response: " + ack);
 
                     // Ask if the user wants to send another message
                     System.out.println("Do you want to send another message? (Y/N)");

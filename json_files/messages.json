@@ -22,6 +22,11 @@
           "usuario": "JOel",
           "mensaje": "segundo mensaje",
           "timestamp": "Mar 3, 2025, 4:39:59 PM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "Estamos comprobando que el chat funcione",
+          "timestamp": "Mar 3, 2025, 4:47:30 PM"
         }
       ]
     },
@@ -37,6 +42,21 @@
           "usuario": "Pedro",
           "mensaje": "Mensaje posterior al segundo mensaje de JOel",
           "timestamp": "Mar 3, 2025, 4:40:32 PM"
+        },
+        {
+          "usuario": "Pedro",
+          "mensaje": "hola",
+          "timestamp": "Mar 3, 2025, 4:49:04 PM"
+        }
+      ]
+    },
+    {
+      "nickname": "Chema",
+      "messages": [
+        {
+          "usuario": "Chema",
+          "mensaje": "Este es un nuevo usuário",
+          "timestamp": "Mar 3, 2025, 4:50:44 PM"
         }
       ]
     }
