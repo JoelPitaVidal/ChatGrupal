@@ -52,7 +52,7 @@ public class Client {
 
                 // Loop to allow the user to continue sending messages until they decide to exit
                 while (true) {
-                    System.out.println("Write your message:");
+                    //System.out.println("Write your message:");
                     String message = sc.nextLine();
 
                     // Check if the user wants to exit the chat
@@ -71,17 +71,17 @@ public class Client {
 
                     // Send the message to the server
                     output.writeObject(clientMessage);
-                    System.out.println("Message sent to server from " + nickname);
+                    // System.out.println("Message sent to server from " + nickname);
 
                     // Read the acknowledgment from the server
                     String ack = (String) input.readObject();
-                    System.out.println("Server response: " + ack);
+                    System.out.println(ack);
 
                     // Clear the terminal
                     clearTerminal();
 
                     // Display all messages from all users
-                    JsonFiles.printMessages();
+                    // JsonFiles.printMessages();
                 }
             } else {
                 System.out.println("Failed to establish connection to the server.");
