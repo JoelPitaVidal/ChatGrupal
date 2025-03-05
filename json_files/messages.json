@@ -5,16 +5,6 @@
       "messages": [
         {
           "usuario": "JOel",
-          "mensaje": "que tal estamos?",
-          "timestamp": "Mar 3, 2025, 11:00:00 AM"
-        },
-        {
-          "usuario": "JOel",
-          "mensaje": "holiwi",
-          "timestamp": "Mar 3, 2025, 11:05:00 AM"
-        },
-        {
-          "usuario": "JOel",
           "mensaje": "Esto es un mensaje posterior al mensaje de Pedro",
           "timestamp": "Mar 3, 2025, 4:35:08 PM"
         },
@@ -42,6 +32,26 @@
           "usuario": "Joel",
           "mensaje": "este usuario se a creado sin querer",
           "timestamp": "Mar 3, 2025, 5:14:20 PM"
+        },
+        {
+          "usuario": "Joel",
+          "mensaje": "hola",
+          "timestamp": "Mar 3, 2025, 6:04:30 PM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "hola",
+          "timestamp": "Mar 5, 2025, 9:54:45 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "adios",
+          "timestamp": "Mar 5, 2025, 10:09:23 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "adios",
+          "timestamp": "Mar 5, 2025, 10:09:28 AM"
         }
       ]
     },
@@ -77,6 +87,36 @@
           "usuario": "Chema",
           "mensaje": "esto se mostrará al cerrar el chat",
           "timestamp": "Mar 3, 2025, 5:08:53 PM"
+        }
+      ]
+    },
+    {
+      "nickname": "Funny",
+      "messages": [
+        {
+          "usuario": "Funny",
+          "mensaje": "hola soy nueva en este chat",
+          "timestamp": "Mar 3, 2025, 5:30:57 PM"
+        },
+        {
+          "usuario": "Funny",
+          "mensaje": "1",
+          "timestamp": "Mar 3, 2025, 5:34:57 PM"
+        },
+        {
+          "usuario": "Funny",
+          "mensaje": "2",
+          "timestamp": "Mar 3, 2025, 5:34:59 PM"
+        },
+        {
+          "usuario": "Funny",
+          "mensaje": "3",
+          "timestamp": "Mar 3, 2025, 5:37:20 PM"
+        },
+        {
+          "usuario": "Funny",
+          "mensaje": "/Hello",
+          "timestamp": "Mar 5, 2025, 10:13:17 AM"
         }
       ]
     }

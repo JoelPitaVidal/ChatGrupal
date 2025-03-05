@@ -146,7 +146,7 @@ public class JsonFiles {
         if (allMessages.isEmpty()) {
             System.out.println("No messages found.");
         } else {
-            System.out.println("Loaded messages from JSON file:");
+            //System.out.println("Loaded messages from JSON file:");
             for (Message msg : allMessages) {
                 System.out.println(msg);
             }
