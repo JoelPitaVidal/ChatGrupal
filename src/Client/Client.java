@@ -21,6 +21,8 @@ public class Client {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        int usercount = 0;
+
         // Ask for the server IP and port
         System.out.println("Enter the server IP:");
         String host = sc.nextLine();
@@ -30,7 +32,10 @@ public class Client {
         // Ask for the user's nickname once
         System.out.println("Enter your nickname:");
         String nickname = sc.nextLine();
-
+        System.out.println("The user "+nickname+" has been connected \n");
+        usercount ++;
+        System.out.println("There are a total of "+usercount+" users online\n");
+        System.out.println("/help to see the available commands");
         // Load or create a ClientMessage object for the user
         ClientMessage clientMessage = JsonFiles.loadOrCreateClientMessage(nickname);
 
@@ -61,10 +66,28 @@ public class Client {
                         break; // Exit the loop if the user types /exitChat
                     }
 
+                    // Comand to remain AFK
+                    if (message.equalsIgnoreCase("/help")) {
+                        System.out.println("commands:" +
+                                "\n/bye = exit chat\n/Hello = say hello\n/AFK = remain AFK\n/busy = you are bussy with something");
+                    }
+
+
                     // Comand to say hello
                     if (message.equalsIgnoreCase("/Hello")) {
                         System.out.println("Hello There");
                     }
+
+                    // Comand to remain AFK
+                    if (message.equalsIgnoreCase("/AFK")) {
+                        System.out.println("I'll be back soon");
+                    }
+
+                    // Comand to remain AFK
+                    if (message.equalsIgnoreCase("/busy")) {
+                        System.out.println("I'll be back in 5 minutes");
+                    }
+
 
                     // Add the message to the ClientMessage object
                     clientMessage.addMessage(nickname, message);

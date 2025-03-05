@@ -36,7 +36,7 @@ public class ServerMethods {
                 JsonFiles.addMessage(clientMessage.getNickname(), lastMessage.getUsuario(), lastMessage.getMensaje());
 
                 // Sends acknowledgment to client
-                output.writeObject("Message received: " + lastMessage);
+                output.writeObject("Sended: " + lastMessage);
 
                 // Checks if the client wants to continue
                 if (lastMessage.getMensaje().equalsIgnoreCase("N")) {

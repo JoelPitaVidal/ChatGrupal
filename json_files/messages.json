@@ -5,16 +5,6 @@
       "messages": [
         {
           "usuario": "JOel",
-          "mensaje": "Esto es un mensaje posterior al mensaje de Pedro",
-          "timestamp": "Mar 3, 2025, 4:35:08 PM"
-        },
-        {
-          "usuario": "JOel",
-          "mensaje": "segundo mensaje",
-          "timestamp": "Mar 3, 2025, 4:39:59 PM"
-        },
-        {
-          "usuario": "JOel",
           "mensaje": "Estamos comprobando que el chat funcione",
           "timestamp": "Mar 3, 2025, 4:47:30 PM"
         },
@@ -52,6 +42,16 @@
           "usuario": "JOel",
           "mensaje": "adios",
           "timestamp": "Mar 5, 2025, 10:09:28 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "pingÜino",
+          "timestamp": "Mar 5, 2025, 10:55:32 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "/help",
+          "timestamp": "Mar 5, 2025, 11:17:33 AM"
         }
       ]
     },
@@ -72,6 +72,16 @@
           "usuario": "Pedro",
           "mensaje": "hola",
           "timestamp": "Mar 3, 2025, 4:49:04 PM"
+        },
+        {
+          "usuario": "Pedro",
+          "mensaje": "666",
+          "timestamp": "Mar 5, 2025, 11:04:13 AM"
+        },
+        {
+          "usuario": "Pedro",
+          "mensaje": "777",
+          "timestamp": "Mar 5, 2025, 11:06:37 AM"
         }
       ]
     },
@@ -87,6 +97,21 @@
           "usuario": "Chema",
           "mensaje": "esto se mostrará al cerrar el chat",
           "timestamp": "Mar 3, 2025, 5:08:53 PM"
+        },
+        {
+          "usuario": "Chema",
+          "mensaje": "abeja",
+          "timestamp": "Mar 5, 2025, 10:56:20 AM"
+        },
+        {
+          "usuario": "Chema",
+          "mensaje": "abejorro",
+          "timestamp": "Mar 5, 2025, 10:56:52 AM"
+        },
+        {
+          "usuario": "Chema",
+          "mensaje": "serpiente",
+          "timestamp": "Mar 5, 2025, 10:57:41 AM"
         }
       ]
     },
@@ -127,6 +152,16 @@
           "usuario": "Funny",
           "mensaje": "A",
           "timestamp": "Mar 5, 2025, 10:23:46 AM"
+        },
+        {
+          "usuario": "Funny",
+          "mensaje": "A",
+          "timestamp": "Mar 5, 2025, 10:23:50 AM"
+        },
+        {
+          "usuario": "Funny",
+          "mensaje": "A",
+          "timestamp": "Mar 5, 2025, 10:23:58 AM"
         }
       ]
     }
