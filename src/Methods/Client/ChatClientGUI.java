@@ -7,9 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 public class ChatClientGUI extends JFrame {
     private JTextArea chatArea;
@@ -59,6 +57,9 @@ public class ChatClientGUI extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         add(panel, BorderLayout.SOUTH);
 
+        // Load previous messages
+        loadPreviousMessages();
+
         setVisible(true);
     }
 
@@ -66,10 +67,24 @@ public class ChatClientGUI extends JFrame {
         String message = messageField.getText().trim();
         if (!message.isEmpty()) {
             try {
-                if (message.equalsIgnoreCase("/exitChat")) {
+                //Help command
+                if (message.equalsIgnoreCase("/help")) {
+                    chatArea.append("/bye = exit chat\n/AFK = stay AFK\n/bussy = you are doing something");
+                }
+                //Command to exit the chat
+                if (message.equalsIgnoreCase("/bye")) {
+                    chatArea.append("the user "+nickname+"has been disconnected");
                     System.exit(0);
                 }
+                //Command to stay AFK
+                if (message.equalsIgnoreCase("/AFK")) {
+                    chatArea.append("I will come back soon");
 
+                }
+                //Command to be busy
+                if (message.equalsIgnoreCase("/busy")) {
+                    chatArea.append("I`m busy, don`t disturb");
+                }
                 // Add the message to the ClientMessage object
                 clientMessage.addMessage(nickname, message);
 
@@ -81,12 +96,6 @@ public class ChatClientGUI extends JFrame {
 
                 // Display the message in the chat area
                 chatArea.append("Me: " + message + "\n");
-
-                // Clear the terminal
-                clearTerminal();
-
-                // Display all messages from all users
-                JsonFiles.printMessages();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -97,9 +106,15 @@ public class ChatClientGUI extends JFrame {
         chatArea.append(message + "\n");
     }
 
-    public static void clearTerminal() {
-        // This sequence works on most ANSI-compatible terminals
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    private void loadPreviousMessages() {
+        chatArea.append("COMMANDS:\n/help to see the available commands");
+
+        // Load all messages from all users
+        java.util.List<ClientMessage> clientMessages = JsonFiles.loadMessages();
+        for (ClientMessage cm : clientMessages) {
+            for (Message msg : cm.getMessages()) {
+                chatArea.append(msg.getUsuario() + ": " + msg.getMensaje() + "\n");
+            }
+        }
     }
 }

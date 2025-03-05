@@ -4,26 +4,6 @@
       "nickname": "JOel",
       "messages": [
         {
-          "usuario": "JOel",
-          "mensaje": "Estamos comprobando que el chat funcione",
-          "timestamp": "Mar 3, 2025, 4:47:30 PM"
-        },
-        {
-          "usuario": "JOel",
-          "mensaje": "no te dupliques",
-          "timestamp": "Mar 3, 2025, 5:03:44 PM"
-        },
-        {
-          "usuario": "Joel",
-          "mensaje": "este usuario se a creado sin querer",
-          "timestamp": "Mar 3, 2025, 5:14:13 PM"
-        },
-        {
-          "usuario": "Joel",
-          "mensaje": "este usuario se a creado sin querer",
-          "timestamp": "Mar 3, 2025, 5:14:20 PM"
-        },
-        {
           "usuario": "Joel",
           "mensaje": "hola",
           "timestamp": "Mar 3, 2025, 6:04:30 PM"
@@ -52,6 +32,26 @@
           "usuario": "JOel",
           "mensaje": "/help",
           "timestamp": "Mar 5, 2025, 11:17:33 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "esto funciona?",
+          "timestamp": "Mar 5, 2025, 11:22:52 AM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "has connected.",
+          "timestamp": "Mar 5, 2025, 12:03:31 PM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "has connected.",
+          "timestamp": "Mar 5, 2025, 12:03:52 PM"
+        },
+        {
+          "usuario": "JOel",
+          "mensaje": "has connected.",
+          "timestamp": "Mar 5, 2025, 12:04:03 PM"
         }
       ]
     },
@@ -82,6 +82,16 @@
           "usuario": "Pedro",
           "mensaje": "777",
           "timestamp": "Mar 5, 2025, 11:06:37 AM"
+        },
+        {
+          "usuario": "Pedro",
+          "mensaje": "has connected.",
+          "timestamp": "Mar 5, 2025, 11:27:44 AM"
+        },
+        {
+          "usuario": "Pedro",
+          "mensaje": "has connected.",
+          "timestamp": "Mar 5, 2025, 11:28:41 AM"
         }
       ]
     },
@@ -112,6 +122,16 @@
           "usuario": "Chema",
           "mensaje": "serpiente",
           "timestamp": "Mar 5, 2025, 10:57:41 AM"
+        },
+        {
+          "usuario": "Chema",
+          "mensaje": "esto funciona??",
+          "timestamp": "Mar 5, 2025, 11:23:53 AM"
+        },
+        {
+          "usuario": "Chema",
+          "mensaje": "esto funciona??",
+          "timestamp": "Mar 5, 2025, 11:24:35 AM"
         }
       ]
     },

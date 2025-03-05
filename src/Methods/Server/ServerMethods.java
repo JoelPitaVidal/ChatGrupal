@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerMethods {
+    private static List<ObjectOutputStream> clientOutputs = new ArrayList<>();
+    private static int userCount = 0;
 
     /**
      * Handles the communication with a single client.
@@ -20,9 +23,14 @@ public class ServerMethods {
      * @throws ClassNotFoundException If the class of a serialized object cannot be found.
      */
     public static void handleClient(Socket socket) throws IOException, ClassNotFoundException {
-        System.out.println("Handling client connection..."); // Debug message for handling client connection
+        System.out.println("Handling client connection...");
         try (ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
              ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream())) {
+
+            synchronized (clientOutputs) {
+                clientOutputs.add(output);
+                userCount++;
+            }
 
             boolean continueChat = true;
             while (continueChat && !socket.isClosed()) {
@@ -35,25 +43,43 @@ public class ServerMethods {
                 // Add the message to the JSON file
                 JsonFiles.addMessage(clientMessage.getNickname(), lastMessage.getUsuario(), lastMessage.getMensaje());
 
-                // Sends acknowledgment to client
-                output.writeObject("Sended: " + lastMessage);
+                // Broadcast the message to all clients
+                broadcastMessage(lastMessage.getUsuario() + ": " + lastMessage.getMensaje());
 
                 // Checks if the client wants to continue
-                if (lastMessage.getMensaje().equalsIgnoreCase("N")) {
+                if (lastMessage.getMensaje().equalsIgnoreCase("has disconnected.")) {
                     continueChat = false;
+                    synchronized (clientOutputs) {
+                        clientOutputs.remove(output);
+                        userCount--;
+                    }
                 }
             }
-        } catch (SocketException e) {
-            System.out.println("SocketException: " + e.getMessage()); // Debug message for socket exceptions
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("IOException: " + e.getMessage()); // Debug message for IO exceptions
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error handling client: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Closes the client socket
             if (!socket.isClosed()) {
                 socket.close();
-                System.out.println("Connection Closed"); // Message when connection is closed
+                System.out.println("Connection closed");
+            }
+        }
+    }
+
+    /**
+     * Broadcasts a message to all connected clients.
+     *
+     * @param message The message to broadcast.
+     */
+    private static void broadcastMessage(String message) {
+        synchronized (clientOutputs) {
+            for (ObjectOutputStream output : clientOutputs) {
+                try {
+                    output.writeObject(message + " (Total users: " + userCount + ")");
+                } catch (IOException e) {
+                    System.out.println("Error broadcasting message: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
